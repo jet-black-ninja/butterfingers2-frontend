@@ -10,13 +10,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/random-words": "^1.2.0",
+    "focus-trap-react": "^10.3.0",
+    "memfs": "^4.14.0",
+    "random-words": "^2.0.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "recharts": "^2.13.1",
+    "sass": "^1.80.5",
+    "socket.io-client": "^4.8.1",
+    "vite-plugin-svgr": "^4.2.0",
+    "web-vitals": "^4.2.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@types/node": "^22.8.4",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
@@ -25,6 +36,7 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
     "gts": "^6.0.2",
+    "path": "^0.12.7",
     "prettier": "^3.3.3",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0",
