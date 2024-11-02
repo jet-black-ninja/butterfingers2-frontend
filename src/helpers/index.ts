@@ -1,7 +1,6 @@
 import { generate } from 'random-words';
 import { TypingWords } from '@/components/Typing/types';
 import { data } from '@/data';
-import { l } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 
 export function firstLetterUpperCase(word: string) {
   return word[0].toUpperCase() + word.slice(1);
