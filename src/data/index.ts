@@ -1,6 +1,6 @@
 import { QuoteLengthType } from '@/types';
 export const data = {
-  apiUrl: import.meta.env.PROD ? '' : 'http://localhost:5000',
+  apiUrl: import.meta.env.VITE_SERVER_URL,
   theme: ['default', 'midnight', 'retro', 'superuser', 'vscode'],
   typemode: {
     time: [15, 30, 60, 120],

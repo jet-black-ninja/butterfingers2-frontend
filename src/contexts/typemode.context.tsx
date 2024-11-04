@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { getQuoteTagList } from '@/services/quotable';
 import { QuoteLengthType } from '@/types';
 import { useLocalStorageState } from '@/hooks';
