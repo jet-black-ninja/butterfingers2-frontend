@@ -119,7 +119,7 @@ export function ProfileContextProvider({
     });
     setLoadingUser(true);
     onLoadProfileData();
-  });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('customize', JSON.stringify(profile.customize));
