@@ -3,7 +3,8 @@ import Header from './components/Header/Header';
 import Typing from './components/Typing/Typing';
 import Footer from './components/Footer/Footer';
 import { useState } from 'react';
-import CopyButton from './components/UI/CopyButton/CopyButton';
+import Loading from './components/UI/Loading/Loading';
+
 function App() {
   const [roomCode, setRoomCode] = useState<string | null>(null);
   return (
@@ -11,6 +12,7 @@ function App() {
       <Header roomCode={roomCode} />
       <main>
         <Typing />
+        <Loading type="dot-flashing" />
       </main>
       <Footer />
     </>
