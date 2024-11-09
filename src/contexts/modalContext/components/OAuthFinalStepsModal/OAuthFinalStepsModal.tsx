@@ -1,4 +1,4 @@
-export type OauthFinalStepsModalOptions = {
+export type OAuthFinalStepsModalOptions = {
   platform: 'GitHub' | 'Google';
 };
 function OAuthFinalStepsModal() {

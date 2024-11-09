@@ -2,7 +2,7 @@ import { GetHistory, GetProfile, PostCustomize } from '@/api/profile';
 import { CaretStyleType, ThemeType } from '@/data/types';
 import { TypingResult } from '@/types';
 import { createContext, useEffect, useState } from 'react';
-import { OauthFinalStepsModalOptions } from './modalContext/components/OAuthFinalStepsModal/OAuthFinalStepsModal';
+import { OAuthFinalStepsModalOptions } from './modalContext/components/OAuthFinalStepsModal/OAuthFinalStepsModal';
 import { ISOToDate } from '@/helpers';
 import { TypingCompleted, TypingStarted } from '@/api/typing';
 
@@ -51,7 +51,7 @@ export interface IProfile {
 interface Context {
   profile: IProfile;
   loadingUser: boolean;
-  oauthFinalSteps: OauthFinalStepsModalOptions['platform'] | null;
+  oAuthFinalSteps: OAuthFinalStepsModalOptions['platform'] | null;
   onOauthFinalStepsComplete: (username: string) => void;
   onLoadProfileData: () => void;
   onLoadHistory: (...args: Parameters<typeof GetHistory>) => void;
@@ -82,7 +82,7 @@ const initial: Context = {
     isOAuth: false,
   },
   loadingUser: false,
-  oauthFinalSteps: null,
+  oAuthFinalSteps: null,
   onOauthFinalStepsComplete: () => {},
   onLoadProfileData: () => {},
   onLoadHistory: () => {},
@@ -105,8 +105,8 @@ export function ProfileContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [oauthFinalSteps, setOAuthFinalSteps] = useState(
-    initial.oauthFinalSteps
+  const [oAuthFinalSteps, setOAuthFinalSteps] = useState(
+    initial.oAuthFinalSteps
   );
   const [profile, setProfile] = useState(initial.profile);
   const [loadingUser, setLoadingUser] = useState(initial.loadingUser);
@@ -299,7 +299,7 @@ export function ProfileContextProvider({
       value={{
         profile,
         loadingUser,
-        oauthFinalSteps,
+        oAuthFinalSteps,
         onOauthFinalStepsComplete,
         onLoadProfileData,
         onLoadHistory,

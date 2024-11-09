@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import styles from './Header.module.scss';
 import { ButtonRounded, Loading, Logo } from '../UI';
 import { Icon1v1, IconAccount, IconCustomize, IconLeave } from '@/assets/image';
+import { ModalContext } from '@/contexts/modalContext/modal.context';
 interface Props {
   windowWidth: number;
   roomCode: string | null;
@@ -12,7 +13,7 @@ interface Props {
 }
 function Header(props: Props) {
   const { windowWidth, roomCode, onLogoClick, onLeaveRoom } = props;
-  // const { activeModal, onOpenModal } = useContext(ModalContext);
+  const { activeModal, onOpenModal } = useContext(ModalContext);
   const { typingFocused } = useContext(TypingContext);
   const { profile, loadingUser } = useContext(ProfileContext);
   return (
