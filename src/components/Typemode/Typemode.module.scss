@@ -1,0 +1,28 @@
+.container {
+  background-color: var(--typemode-bg);
+  width: max-content;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 8px;
+  display: flex;
+  height: 100%;
+  @media (max-width: 725px) {
+    flex-direction: column;
+    padding: 16px;
+  }
+}
+.splitBar {
+  align-self: stretch;
+  width: 3px;
+  background-color: var(--clr-char);
+  margin-top: 9px;
+  margin-bottom: 9px;
+  overflow: 0.2;
+  @media (max-width: 725px) {
+    align-self: center;
+    height: 2px;
+    width: 75px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+}

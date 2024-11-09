@@ -1,8 +1,7 @@
-import { createContext } from 'vm';
 import OAuthFinalStepsModal, {
   OAuthFinalStepsModalOptions,
 } from './components/OAuthFinalStepsModal/OAuthFinalStepsModal';
-import { useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { TypingContext } from '../typing.context';
 import { ProfileContext } from '../profile.context';
 import { createPortal } from 'react-dom';
@@ -11,6 +10,7 @@ import OneVersusOneModal from './components/OneVersusOneModal/OneVersusOneModal'
 import AccountModal from './components/AccountModal/AccountModal';
 import QuoteTagsModal from './components/QuoteTagModal/QuoteTagsModal';
 import UserModal from './components/UserModal/UserModal';
+
 export type ModalType =
   | { modal: 'customize' }
   | { modal: 'oneVersusOne' }
@@ -19,6 +19,7 @@ export type ModalType =
   | { modal: 'user' }
   | { modal: 'oAuthFinalSteps'; options: OAuthFinalStepsModalOptions }
   | null;
+
 export interface ModalContextType {
   activeModal: ModalType;
   onOpenModal: (modal: ModalType) => void;
@@ -59,23 +60,27 @@ export function ModalContextProvider({
       setActiveModal(null);
     }
   }, [oAuthFinalSteps]);
+
   return (
     <ModalContext.Provider value={{ activeModal, onOpenModal }}>
       {children}
       {activeModal &&
         createPortal(
           activeModal.modal === 'oneVersusOne' ? (
-            <OneVersusOneModal />
+            <OneVersusOneModal onClose={() => onOpenModal(null)} />
           ) : activeModal.modal === 'customize' ? (
-            <CustomizeModal />
+            <CustomizeModal onClose={() => onOpenModal(null)} />
           ) : activeModal.modal === 'account' ? (
-            <AccountModal />
+            <AccountModal onClose={() => onOpenModal(null)} />
           ) : activeModal.modal === 'quoteTags' ? (
-            <QuoteTagsModal />
+            <QuoteTagsModal onClose={() => onOpenModal(null)} />
           ) : activeModal.modal === 'user' ? (
-            <UserModal />
-          ) : activeModal.modal === 'oAuthFinalSteps' ? (
-            <OAuthFinalStepsModal />
+            <UserModal onClose={() => onOpenModal(null)} />
+          ) : activeModal.modal === 'oauthFinalSteps' ? (
+            <OAuthFinalStepsModal
+              options={activeModal.options}
+              onClose={() => onOpenModal(null)}
+            />
           ) : null,
           document.body
         )}

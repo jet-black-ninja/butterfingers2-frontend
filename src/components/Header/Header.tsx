@@ -25,12 +25,20 @@ function Header(props: Props) {
         <div
           className={`opacity-transition ${typingFocused ? 'hide' : ''} ${styles.headerButtons}`}
         >
-          <ButtonRounded className={styles.headerBtn}>
+          <ButtonRounded
+            className={styles.headerBtn}
+            onClick={() => onOpenModal({ modal: 'customize' })}
+            active={activeModal?.modal === 'customize'}
+          >
             <IconCustomize />
             {windowWidth > 600 && <span>Customize</span>}
           </ButtonRounded>
           {!roomCode ? (
-            <ButtonRounded className={styles.headerBtn}>
+            <ButtonRounded
+              className={styles.headerBtn}
+              onClick={() => onOpenModal({ modal: 'oneVersusOne' })}
+              active={activeModal?.modal === 'oneVersusOne'}
+            >
               <Icon1v1 />
               {windowWidth > 510 && <span>1v1 (Multiplayer)</span>}
             </ButtonRounded>
@@ -43,6 +51,7 @@ function Header(props: Props) {
           {profile.username ? (
             <ButtonRounded
               className={`${styles.headerBtn} ${styles.accountBtn}`}
+              onClick={() => onOpenModal({ modal: 'user' })}
             >
               <IconAccount className={styles.accountBtnIcon} />
               <span className={styles.accountBtnText}>{profile.username}</span>
@@ -50,6 +59,9 @@ function Header(props: Props) {
           ) : (
             <ButtonRounded
               className={`${styles.headerBtn} ${styles.accountBtn}`}
+              onClick={() => onOpenModal({ modal: 'account' })}
+              active={activeModal?.modal === 'account'}
+              disabled={loadingUser}
             >
               <IconAccount className={styles.accountBtnIcon} />
               {windowWidth > 575 &&
