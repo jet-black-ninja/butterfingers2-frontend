@@ -7,11 +7,12 @@
   max-height: --webkit-full-available;
   display: flex;
   justify-content: center;
+  align-items: center;
   z-index: 5;
-  animation: backdropFill 250ms;
+  animation: backdropFadeIn 250ms;
   animation-fill-mode: forwards;
 }
-@keyframes backdropFill {
+@keyframes backdropFadeIn {
   0% {
     background-color: rgba(0, 0, 0, 0);
   }
@@ -24,18 +25,21 @@
   --modal-padding: 32px;
   background-color: var(--clr-modal);
   border-radius: 6px;
-  min-width: 91.5%;
+  max-width: 91.5%;
   max-height: 90%;
   padding: var(--modal-padding);
   padding-top: 0;
   overflow-y: auto;
   overflow-x: hidden;
+
   &::-webkit-scrollbar-track {
     background: var(--clr-bg);
   }
+
   @media (max-width: 525px) {
     --modal-padding: 24px;
   }
+
   @media (max-width: 370px) {
     --modal-padding: 17px;
   }
@@ -60,9 +64,11 @@
   cursor: pointer;
   color: inherit;
 }
+
 .headerWrapper {
   display: flex;
   align-items: center;
+
   &Icon {
     margin-right: 10px;
     width: 24px;

@@ -64,6 +64,7 @@ function Header(props: Props) {
               disabled={loadingUser}
             >
               <IconAccount className={styles.accountBtnIcon} />
+
               {windowWidth > 575 &&
                 (loadingUser ? (
                   <Loading

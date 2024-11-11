@@ -1,5 +1,6 @@
 .switch {
   --transition: 200ms;
+
   border-radius: 100vw;
   width: 50px;
   height: 27px;
@@ -8,6 +9,7 @@
   border: 2px solid var(--clr-main);
   cursor: pointer;
   transition: background-color var(--transition);
+
   &__circle {
     position: absolute;
     top: 50%;
@@ -22,10 +24,12 @@
       transform 300ms,
       background-color var(--transition);
   }
+
   &--on {
     background-color: var(--clr-main);
+
     .switch__circle {
-      background-color: var(--clr-main);
+      background-color: var(--clr-bg);
       transform: translateY(-50%) translateX(100%);
     }
   }

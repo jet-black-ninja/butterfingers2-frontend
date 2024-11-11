@@ -1,0 +1,88 @@
+@use '../../../../theme/themes-preview' as theme;
+.modal {
+  max-width: 460px;
+}
+
+.customizationsWrapper {
+  width: 100%;
+}
+
+.setting {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  &Theme {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+
+    & > label {
+      margin-top: 12px;
+    }
+  }
+}
+
+.label {
+  margin-right: 15px;
+  opacity: 0.75;
+  transition: opacity 200ms;
+  user-select: none;
+  &.active {
+    opacity: 1;
+  }
+}
+//TODO understand this
+.range {
+  position: relative;
+  &Input {
+    position: relative;
+    margin-top: 3px;
+    accent-color: var(--clr-main);
+  }
+  &TooltipContainer {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    height: 100%;
+    pointer-events: none;
+  }
+  &TooltipRelative {
+    position: relative;
+  }
+  &Tooltip {
+    position: absolute;
+    left: 0;
+  }
+}
+
+.caretStylesButtons {
+  display: flex;
+  align-items: center;
+  & > *:not(:last-child) {
+    margin-right: 5px;
+  }
+}
+.caretStylesBtn {
+  background: none;
+  border: 2px solid var(--clr-char);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  padding: 7px;
+  &.active {
+    border-color: var(--clr-main);
+    background-color: rgba(255, 255, 255, 0.05);
+    filter: brightness(120%);
+  }
+  &Caret {
+    position: static !important;
+    max-height: 100%;
+  }
+}

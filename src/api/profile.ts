@@ -24,7 +24,7 @@ export async function GetHistory(
   return res.data;
 }
 export async function PostCustomize(customize: Partial<ICustomize>) {
-  const res = await axios.post(`${data.apiUrl}/customize`, customize, {
+  const res = await axios.post(`${data.apiUrl}/profile/customize`, customize, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
