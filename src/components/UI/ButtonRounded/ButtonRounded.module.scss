@@ -12,7 +12,7 @@
   }
 
   &:active:not(&--disabled),
-  &:active {
+  &.active {
     opacity: 1;
     background-color: var(--clr-tooltip-bg);
     color: var(--clr-tooltip-text);
