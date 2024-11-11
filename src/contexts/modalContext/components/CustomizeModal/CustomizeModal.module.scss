@@ -58,7 +58,12 @@
     left: 0;
   }
 }
-
+.input-width-percentage {
+  position: absolute;
+  right: 0;
+  transform: translateX(100%);
+  font-weight: bold;
+}
 .caretStylesButtons {
   display: flex;
   align-items: center;
@@ -85,4 +90,75 @@
     position: static !important;
     max-height: 100%;
   }
+}
+
+.themeButtons {
+  display: flex;
+  flex-wrap: wrap;
+  & > button:not(:last-child) {
+    margin-right: 7px;
+  }
+}
+
+.themeBtn {
+  font-size: inherit;
+  font-family: inherit;
+  border-radius: 12px;
+  padding: 0.4em 1em;
+  border: 2px solid transparent;
+  margin-top: 5px;
+  cursor: pointer;
+
+  &--default {
+    color: theme.$default-text;
+    background-color: theme.$default-bg;
+
+    &:hover,
+    &.active {
+      border-color: theme.$default-text;
+    }
+  }
+
+  &--midnight {
+    color: theme.$midnight-text;
+    background-color: theme.$midnight-bg;
+
+    &:hover,
+    &.active {
+      border-color: theme.$midnight-text;
+    }
+  }
+
+  &--retro {
+    color: theme.$retro-text;
+    background-color: theme.$retro-bg;
+
+    &:hover,
+    &.active {
+      border-color: theme.$retro-text;
+    }
+  }
+
+  &--superuser {
+    color: theme.$superuser-text;
+    background-color: theme.$superuser-bg;
+
+    &:hover,
+    &.active {
+      border-color: theme.$superuser-text;
+    }
+  }
+
+  &--vscode {
+    color: theme.$vscode-text;
+    background-color: theme.$vscode-bg;
+
+    &:hover,
+    &.active {
+      border-color: theme.$vscode-text;
+    }
+  }
+}
+.buttonResetToDefault {
+  margin-top: 40px;
 }

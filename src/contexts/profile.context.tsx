@@ -294,6 +294,18 @@ export function ProfileContextProvider({
       }));
       onUpdateUsername(username);
     };
+  useEffect(() => {
+    const classList = document.body.classList;
+    for (let i = 0; i < classList.length; i++) {
+      if (classList[i].startsWith('theme--')) {
+        classList.remove(classList[i]);
+        break;
+      }
+    }
+    document.body.classList.add(
+      `theme--${profile.customize.theme}` || 'default'
+    );
+  }, [profile.customize.theme]);
   return (
     <ProfileContext.Provider
       value={{

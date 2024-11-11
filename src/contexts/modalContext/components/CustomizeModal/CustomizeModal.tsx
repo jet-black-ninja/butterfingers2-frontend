@@ -201,7 +201,73 @@ function CustomizeModal(props: Props) {
             ))}
           </div>
         </div>
+        <div className={styles.setting}>
+          <label
+            htmlFor="smooth-caret"
+            className={`${styles.label} ${smoothCaret ? styles.active : ''}`}
+          >
+            Smooth Caret
+          </label>
+          <Tooltip
+            text={smoothCaret ? 'on' : 'off'}
+            position="left"
+            showOnHover
+          >
+            <Switch
+              id="smooth-caret"
+              state={smoothCaret}
+              onToggle={() => onCustomizeToggleState('smoothCaret')}
+              className={styles.switch}
+            />
+          </Tooltip>
+        </div>
+        <div className={styles.setting}>
+          <label
+            htmlFor="sound-on-click"
+            className={`${styles.label} ${soundOnClick ? styles.active : ''}`}
+          >
+            Sound On Click
+          </label>
+          <Tooltip
+            text={soundOnClick ? 'on' : 'off'}
+            position="left"
+            showOnHover
+          >
+            <Switch
+              id="sound-on-click"
+              state={soundOnClick}
+              onToggle={() => onCustomizeToggleState('soundOnClick')}
+              className={styles.switch}
+            />
+          </Tooltip>
+        </div>
+        <div className={`${styles.setting} ${styles.settingTheme}`}>
+          <label htmlFor="theme" className={`${styles.label} ${styles.active}`}>
+            Theme
+          </label>
+
+          <div className={styles.themeButtons}>
+            {data.theme.map(mapTheme => (
+              <button
+                className={`${styles.themeBtn} ${styles[`themeBtn--${mapTheme}`]} ${
+                  mapTheme === theme ? styles.active : ''
+                }`}
+                onClick={() => onCustomizeUpdateState({ theme: mapTheme })}
+                key={mapTheme}
+              >
+                {mapTheme}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
+      <ButtonRounded
+        onClick={() => onCustomizeResetState()}
+        variant="2"
+        className={styles.buttonResetToDefault}
+      >
+        Reset To Default
+      </ButtonRounded>
     </Modal>
   );
 }
