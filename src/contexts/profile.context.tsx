@@ -5,6 +5,7 @@ import { createContext, useEffect, useState } from 'react';
 import { OAuthFinalStepsModalOptions } from './modalContext/components/OAuthFinalStepsModal/OAuthFinalStepsModal';
 import { ISOToDate } from '@/helpers';
 import { TypingCompleted, TypingStarted } from '@/api/typing';
+import { setPriority } from 'os';
 
 interface CustomizeBooleans {
   liveWpm: boolean;
@@ -126,18 +127,35 @@ export function ProfileContextProvider({
   }, [profile.customize]);
 
   const onLoadProfileData: Context['onLoadProfileData'] = () => {
-    GetProfile().then((data: any) => {
-      const filteredData: any = {};
-      Object.keys(data).forEach(key => {
-        if (
-          data[key].constructor.name === 'Object' &&
-          Object.keys(data[key].length === 0)
-        ) {
-          return;
+    GetProfile()
+      .then((data: any) => {
+        const filteredData: any = {};
+        Object.keys(data).forEach(key => {
+          if (
+            data[key].constructor.name === 'Object' &&
+            Object.keys(data[key].length === 0)
+          ) {
+            return;
+          }
+          filteredData[key] = data[key];
+        });
+        setProfile(state => ({
+          ...state,
+          ...filteredData,
+        }));
+        if (filteredData.customize) {
+          customizeServerLatest = filteredData.customize;
         }
-        filteredData[key] = data[key];
+      })
+      .catch(err => {
+        const { platform } = JSON.parse(err.message);
+        if (platform) {
+          setOAuthFinalSteps(platform);
+        }
+      })
+      .finally(() => {
+        setLoadingUser(false);
       });
-    });
   };
 
   const onLoadHistory: Context['onLoadHistory'] = (page, limit) => {

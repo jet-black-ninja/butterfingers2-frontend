@@ -10,7 +10,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   >;
   error?: boolean;
   classNameContainer?: string;
-  wrapperChildren: React.ReactNode;
+  wrapperChildren?: React.ReactNode;
   showPassword?: { bool: boolean; onToggle: () => void };
 }
 function InputField(props: Props) {
@@ -33,17 +33,17 @@ function InputField(props: Props) {
       />
       <Icon className={styles.icon} />
       {showPassword && (
-        <Tooltip position='left' text={showPassword.bool === true ? 'hide password' : 'show password'}
+        <Tooltip
+          position="left"
+          text={showPassword.bool === true ? 'hide password' : 'show password'}
           showOnHover
-        className={styles.passwordVisibility}>
-          <button
-            type="button"
-            onClick={() => showPassword?.onToggle()}
-          >
+          className={styles.passwordVisibility}
+        >
+          <button type="button" onClick={() => showPassword?.onToggle()}>
             {showPassword.bool === true ? (
-              <IconEyeOn className={styles.passwordVisibilityIcon}/>
+              <IconEyeOn className={styles.passwordVisibilityIcon} />
             ) : (
-                <IconEyeOff className={styles.passwordVisibilityIcon}/>
+              <IconEyeOff className={styles.passwordVisibilityIcon} />
             )}
           </button>
         </Tooltip>
