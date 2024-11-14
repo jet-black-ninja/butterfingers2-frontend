@@ -1,5 +1,5 @@
 function Typing() {
-  return <div>Keyboard</div>;
+  return <div>Words</div>;
 }
 
 export default Typing;
