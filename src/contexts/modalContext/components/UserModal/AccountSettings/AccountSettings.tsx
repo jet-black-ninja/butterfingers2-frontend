@@ -116,7 +116,7 @@ function AccountSettings() {
                 <IconKeyboardArrowLeft className={styles.goBackButtonIcon} />
               </ButtonRounded>
             </Tooltip>
-            <h2>
+            <h2 className={styles.heading}>
               {tabs[currentTab]?.icon}
               <span>{currentTab}</span>
             </h2>

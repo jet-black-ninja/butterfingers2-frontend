@@ -48,7 +48,7 @@ export async function httpClearHistory(password: string) {
   return res.data;
 }
 
-export async function ResetStats(password: string) {
+export async function httpResetStats(password: string) {
   const res = await axios.post(
     `${data.apiUrl}/profile/reset-stats`,
     { password },
