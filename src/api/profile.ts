@@ -33,7 +33,7 @@ export async function PostCustomize(customize: Partial<ICustomize>) {
   });
   return res.data;
 }
-export async function ClearHistory(password: string) {
+export async function httpClearHistory(password: string) {
   const res = await axios.post(
     `${data.apiUrl}/profile/history/clear`,
     { password },

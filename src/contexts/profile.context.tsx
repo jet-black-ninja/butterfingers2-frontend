@@ -115,9 +115,12 @@ export function ProfileContextProvider({
   useEffect(() => {
     setProfile(state => {
       const localStorageCustomize = localStorage.getItem('customize');
+
       if (!localStorageCustomize) return state;
+
       return { ...state, customize: JSON.parse(localStorageCustomize) };
     });
+
     setLoadingUser(true);
     onLoadProfileData();
   }, []);
@@ -129,26 +132,26 @@ export function ProfileContextProvider({
   const onLoadProfileData: Context['onLoadProfileData'] = () => {
     GetProfile()
       .then((data: any) => {
-        const filteredData: any = {};
-        Object.keys(data).forEach(key => {
-          if (
-            data[key].constructor.name === 'Object' &&
-            Object.keys(data[key].length === 0)
-          ) {
-            return;
-          }
-          filteredData[key] = data[key];
-        });
+        // const filteredData: any = {};
+        // Object.keys(data).forEach(key => {
+        //   if (
+        //     data[key].constructor.name === 'Object' &&
+        //     Object.keys(data[key].length === 0)
+        //   ) {
+        //     return;
+        //   }
+        //   filteredData[key] = data[key];
+        // });
         setProfile(state => ({
           ...state,
-          ...filteredData,
+          ...data,
         }));
-        if (filteredData.customize) {
-          customizeServerLatest = filteredData.customize;
+        if (data.customize) {
+          customizeServerLatest = data.customize;
         }
       })
       .catch(err => {
-        const { platform } = JSON.parse(err.message);
+        const { platform } = err.message;
         if (platform) {
           setOAuthFinalSteps(platform);
         }

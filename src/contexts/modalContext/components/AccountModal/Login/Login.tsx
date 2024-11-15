@@ -30,7 +30,11 @@ function Login() {
     }
     LogIn(
       logInWith === 'email'
-        ? { logInWith: 'email', email: fields.email, password: fields.password }
+        ? {
+            logInWith: 'email',
+            email: fields.email,
+            password: fields.password,
+          }
         : {
             logInWith: 'username',
             username: fields.username,
@@ -42,11 +46,12 @@ function Login() {
         onLoadProfileData();
       })
       .catch(err => {
-        const parsedErr = JSON.parse(err.message);
-        if (parsedErr?.message) {
+        const parsedError = JSON.parse(err.message);
+
+        if (parsedError?.message) {
           setError({
-            message: parsedErr.message,
-            field: parsedErr.field,
+            message: parsedError.message,
+            field: parsedError.field,
           });
         }
       })
@@ -54,11 +59,12 @@ function Login() {
         setSubmitLoading(false);
       });
   };
+
   useEffect(() => {
     setError(null);
   }, [logInWith]);
   return (
-    <form className={styles.container} onSubmit={() => handleSubmit}>
+    <form className={styles.container} onSubmit={handleSubmit}>
       {logInWith === 'username' ? (
         <InputField
           type="text"

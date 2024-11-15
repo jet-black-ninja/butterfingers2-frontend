@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  padding: 1em;
+  margin-left: -1em;
+  border-left: 3px solid var(--clr--char);
+  border-radius: 0;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--clr-main);
+  }
+  &Icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 7px;
+  }
+}
+.logOut {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-top: 40px;
+  border: 1px solid var(--clr-char-incorrect);
+  opacity: 1;
+  color: var(--clr-char-correct);
+  font-size: 1rem;
+  transition: background-color 125ms;
+  &Icon {
+    width: 20px;
+    margin-right: 1px;
+  }
+  &:hover {
+    background-color: var(--clr-char-incorrect);
+    color: var(--clr-bg);
+  }
+}
+.headingContainer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.goBackButtonContainer {
+  position: absolute;
+  left: -10px;
+}
+.goBackButton {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  &Icon {
+    width: 35px;
+    height: 35px;
+  }
+}

@@ -1,5 +1,17 @@
 import { data } from '@/data';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+interface LoginResponse {
+  // Add your expected response properties here
+  token?: string;
+  user?: any;
+  message?: string;
+}
+
+// Define error response type
+interface ErrorResponse {
+  message: string;
+  status?: number;
+}
 export async function OauthFinalSteps(
   platform: 'GitHub' | 'Google',
   username: string
@@ -57,13 +69,13 @@ export async function LogIn(
     password: string;
   },
   abortController?: AbortController
-) {
+): Promise<LoginResponse> {
   try {
-    const body = JSON.stringify(
-      args.logInWith == 'email'
+    const body =
+      args.logInWith === 'email'
         ? { email: args.email, password: args.password }
-        : { username: args.username, password: args.password }
-    );
+        : { username: args.username, password: args.password };
+    console.log(body);
     const res = await axios.post(`${data.apiUrl}/auth/login`, body, {
       headers: {
         Accept: 'application/json',
@@ -72,10 +84,30 @@ export async function LogIn(
       withCredentials: true,
       signal: abortController?.signal,
     });
-    if (res.status === 402) throw new Error(res.data.message);
+    
     return res.data;
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+
+      if (axiosError.response) {
+        // Server responded with an error
+        const errorMessage =
+          axiosError.response.data.message || 'An error occurred during login';
+        throw new Error(errorMessage);
+      } else if (axiosError.request) {
+        // Request was made but no response received
+        throw new Error(
+          'No response received from server. Please check your connection.'
+        );
+      } else {
+        // Error in setting up the request
+        throw new Error('Failed to make login request: ' + axiosError.message);
+      }
+    }
+
+    // Handle non-axios errors
+    throw new Error('An unexpected error occurred');
   }
 }
 
