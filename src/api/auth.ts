@@ -117,7 +117,7 @@ export async function LogOut() {
   });
   return res.data;
 }
-export async function ChangeUsername(newUsername: string, password: string) {
+export async function httpChangeUsername(newUsername: string, password: string) {
   const res = await axios.post(
     `${data.apiUrl}/auth/change-username`,
     { newUsername, password },
@@ -131,7 +131,7 @@ export async function ChangeUsername(newUsername: string, password: string) {
   );
   return res.data;
 }
-export async function ChangePassword(newPassword: string, oldPassword: string) {
+export async function httpChangePassword(newPassword: string, oldPassword: string) {
   const res = await axios.post(
     `${data.apiUrl}/auth/change-password`,
     { newPassword, oldPassword },
