@@ -10,7 +10,7 @@
   &:focus-visible {
     color: var(--clr-char-correct);
   }
-  &:active {
+  &.active {
     color: var(--clr-main);
   }
 }

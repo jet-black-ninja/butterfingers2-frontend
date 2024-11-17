@@ -76,7 +76,7 @@ export function ModalContextProvider({
             <QuoteTagsModal onClose={() => onOpenModal(null)} />
           ) : activeModal.modal === 'user' ? (
             <UserModal onClose={() => onOpenModal(null)} />
-          ) : activeModal.modal === 'oauthFinalSteps' ? (
+          ) : activeModal.modal === 'oAuthFinalSteps' ? (
             <OAuthFinalStepsModal
               options={activeModal.options}
               onClose={() => onOpenModal(null)}

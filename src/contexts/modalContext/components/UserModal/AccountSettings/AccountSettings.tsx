@@ -92,7 +92,7 @@ function AccountSettings() {
           ))}
           <ButtonRounded
             className={styles.logOut}
-            variant="2"
+
             onClick={() => handleLogout()}
           >
             <IconLeave className={styles.logOutIcon} />

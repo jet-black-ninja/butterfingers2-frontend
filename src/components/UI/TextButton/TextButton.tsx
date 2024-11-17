@@ -6,7 +6,7 @@ function TextButton(props: Props) {
   const { isActive, className, children, ...rest } = props;
   return (
     <button
-      className={`${styles.button} ${isActive ? styles.active : ''} ${className}`}
+      className={`${styles.button} ${isActive && styles.active} ${className}`}
       {...rest}
     >
       {children}
