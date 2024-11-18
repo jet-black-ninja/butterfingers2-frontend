@@ -7,10 +7,10 @@ interface Props {
   lineHeight: number;
   wordIndex: number;
   charIndex: number;
-  wordOffset: number;
-  firstWord: boolean;
+  wordsOffset: number;
+  firstWord: string;
   wordRef: React.MutableRefObject<HTMLDivElement | undefined>;
-  charRef: React.MutableRefObject<HTMLDivElement | undefined>;
+  charRef: React.MutableRefObject<HTMLSpanElement | undefined>;
   className?: string;
 }
 
@@ -19,7 +19,7 @@ function Caret(props: Props) {
     lineHeight,
     wordIndex,
     charIndex,
-    wordOffset,
+    wordsOffset,
     firstWord,
     wordRef,
     charRef,
@@ -33,25 +33,25 @@ function Caret(props: Props) {
   useEffect(() => {
     if (!wordRef.current) return;
     const {
-      offsetLeft: wordOffsetLeft,
-      offsetTop: wordOffsetTop,
-      offsetWidth: wordOffsetWidth,
+      offsetLeft: wordsOffsetLeft,
+      offsetTop: wordsOffsetTop,
+      offsetWidth: wordsOffsetWidth,
     } = wordRef.current;
     if (!charRef.current) {
       return setCaretPos({
-        x: wordOffsetLeft + wordOffsetWidth,
-        y: wordOffsetTop - wordOffset,
+        x: wordsOffsetLeft + wordsOffsetWidth,
+        y: wordsOffsetTop - wordsOffset,
       });
     }
     const { offsetLeft: charOffsetLeft } = charRef.current;
     setCaretPos({
-      x: wordOffsetLeft + charOffsetLeft,
-      y: wordOffsetTop - wordOffset,
+      x: wordsOffsetLeft + charOffsetLeft,
+      y: wordsOffsetTop - wordsOffset,
     });
   }, [
     wordIndex,
     charIndex,
-    wordOffset,
+    wordsOffset,
     firstWord,
     wordRef,
     charRef,
