@@ -3,7 +3,6 @@ import { TypingWords } from '../types';
 import styles from './Input.module.scss';
 import { TypingContext } from '@/contexts/typing.context';
 import { ProfileContext } from '@/contexts/profile.context';
-import { i } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 import Caret from './Caret/Caret';
 interface Props {
   words: TypingWords;
