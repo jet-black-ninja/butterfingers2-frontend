@@ -1,4 +1,15 @@
-import {} from './actions';
+import {
+  type,
+  start,
+  nextWord,
+  deleteKey,
+  deleteWord,
+  addWords,
+  newWords,
+  restart,
+  timeline,
+  result,
+} from './actions';
 import { TypingResult } from '@/types';
 import { TypingWords } from '../types';
 
@@ -45,7 +56,7 @@ export type TypingActions =
 export default function typingReducer(
   state: TypingState,
   action: TypingActions
-): TTypingState {
+): TypingState {
   switch (action.type) {
     case 'START':
       return start(state, action.payload);

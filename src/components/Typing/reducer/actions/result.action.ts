@@ -1,8 +1,7 @@
 import { getTypingResults, twoDecimals } from '@/helpers';
 import { TypingState } from '../typing.reducer';
-import { time } from 'console';
 
-export default function result(state: TypingState): TypingState {
+export default function result(state: TypingState, time?: number): TypingState {
   if (
     state.result.timeline.length === 0 ||
     !state.dateTypingStarted ||
