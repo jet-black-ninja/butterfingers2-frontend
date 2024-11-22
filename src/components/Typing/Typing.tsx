@@ -3,7 +3,13 @@ import { TypemodeContext } from '@/contexts/typemode.context';
 import { TypingContext } from '@/contexts/typing.context';
 import { useSound } from '@/hooks';
 import { TypingResult } from '@/types';
-import { useContext, useEffect, useReducer, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 import typewriterSound from '@/assets/audio/typewriter.wav';
 import typingReducer, { initialState } from './reducer/typing.reducer';
 interface Props {
@@ -148,6 +154,24 @@ export default function Typing(props: Props) {
     }
   }, [typingStarted]);
 
-  
+  const onRestart = useCallback(() => {}, []);
+  const onRepeat = () => {
+    onTypingEnded();
+    onUpdateTypingFocus(false);
+    dispatch({ type: 'RESTART' });
+    if (mode === 'time') {
+      setTimeCountdown(time);
+    }
+  };
+  useEffect(() => {
+    if (!state.words.length || (mode === 'time' && !oneVersusOne)) return;
+    const lastWordCorrect =
+      state.wordIndex === state.words.length - 1 &&
+      state.words[state.wordIndex].chars.every(char => char.type === 'correct');
+    if (state.wordIndex === state.words.length || lastWordCorrect) {
+      dispatch({ type: 'RESULT' });
+      onUpdateTypingFocus(false);
+    }
+  }, [mode, state.words, state.charIndex, state.wordIndex, oneVersusOne]);
   return <>Typing</>;
 }
