@@ -23,6 +23,7 @@ interface Props {
 }
 //used to abort previous fetch call if new one is called
 let quoteAbortController: AbortController | null = null;
+
 export default function Typing(props: Props) {
   const {
     testText,
@@ -180,7 +181,7 @@ export default function Typing(props: Props) {
     }
   }, [mode, state.words, state.charIndex, state.wordIndex, oneVersusOne]);
   /**
-   *Effect hoot tha check for the need of new words if not in versus mode
+   *Effect hook tha check for the need of new words if not in versus mode
    *
    *  This effect is triggered when the all the available words are typed in timed mode
    */
@@ -195,6 +196,41 @@ export default function Typing(props: Props) {
       }
     }
   }, [mode, state.wordIndex, oneVersusOne]);
-  
+  /**
+   * Effect hook that checks for when restart is triggered and called the abort controller based on it.
+   */
+  useEffect(() => {
+    onRestart();
+    return () => {
+      quoteAbortController?.abort();
+    };
+  }, [onRestart]);
+  /**
+   * Effect hook to check the time interval between tests and update the timeline accordingly
+   */
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (typingStarted) {
+      interval = setInterval(() => {
+        dispatch({ type: 'TIMELINE' });
+        if (mode === 'time' && !oneVersusOne) {
+          setTimeCountdown(prevState => prevState - 1);
+        }
+      }, 1000);
+    } else {
+      clearInterval(interval!);
+    }
+    return () => clearInterval(interval);
+  }, [typingStarted, mode, oneVersusOne]);
+
+  /** 
+   * Effect hook to to show update on time over in time mode
+   */
+  useEffect(() => {
+    if (timeCountdown === 0) {
+      dispatch({ type: "RESULT", payload: time });
+      onUpdateTypingFocus(false);
+    }
+  }, [timeCountdown, time]);
   return <>Typing</>;
 }

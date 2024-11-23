@@ -17,6 +17,10 @@ function App() {
   const [roomCode, setRoomCode] = useState<string | null>(null);
   const { activeModal, onOpenModal } = useContext(ModalContext);
   const [windowWidth] = useWindowDimensions();
+  /**
+   * Effect hook to listen for room join event from the socket.
+   * If the active modal is 'oneVersusOne', it sets the room code and hides the modal when joined.
+   */
   useEffect(() => {
     if (activeModal?.modal === 'oneVersusOne') {
       socket.on('has-joined-room', (roomCode: string) => {
