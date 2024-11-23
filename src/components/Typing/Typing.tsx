@@ -12,13 +12,14 @@ import {
 } from 'react';
 import typewriterSound from '@/assets/audio/typewriter.wav';
 import typingReducer, { initialState } from './reducer/typing.reducer';
+import { getRandomWords } from '@/helpers';
 interface Props {
   testText?: string;
   secondCaret?: { wordIndex: number; charIndex: number };
   oneVersusOne?: boolean;
   typeModeCustom?: string;
   onCaretPositionChange?: (wordIndex: number, charIndex: number) => void;
-  onResult: (result: TypingResult) => void;
+  onResult?: (result: TypingResult) => void;
 }
 //used to abort previous fetch call if new one is called
 let quoteAbortController: AbortController | null = null;
@@ -67,7 +68,6 @@ export default function Typing(props: Props) {
     isLoading ||
     loadingError ||
     (oneVersusOne && !typingStarted);
-
   useEffect(() => {
     const handleMouseMove = () => {
       onUpdateTypingFocus(false);
@@ -163,6 +163,12 @@ export default function Typing(props: Props) {
       setTimeCountdown(time);
     }
   };
+  /**
+   * Effect hook that checks if the typing game has reached its conclusion.
+   *
+   * This effect is triggered when the mode changes to 'time' and oneVersusOne is false.
+   * It also checks if the current word is correct and updates the state accordingly.
+   */
   useEffect(() => {
     if (!state.words.length || (mode === 'time' && !oneVersusOne)) return;
     const lastWordCorrect =
@@ -173,5 +179,22 @@ export default function Typing(props: Props) {
       onUpdateTypingFocus(false);
     }
   }, [mode, state.words, state.charIndex, state.wordIndex, oneVersusOne]);
+  /**
+   *Effect hoot tha check for the need of new words if not in versus mode
+   *
+   *  This effect is triggered when the all the available words are typed in timed mode
+   */
+  useEffect(() => {
+    if (oneVersusOne) return;
+    if (mode === 'time') {
+      if ((state.wordIndex + 1) % 10 === 0) {
+        dispatch({
+          type: 'ADD_WORDS',
+          payload: getRandomWords(10, punctuation, numbers),
+        });
+      }
+    }
+  }, [mode, state.wordIndex, oneVersusOne]);
+  
   return <>Typing</>;
 }
