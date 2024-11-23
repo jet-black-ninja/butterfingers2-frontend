@@ -4,6 +4,7 @@ import { TypingContext } from '@/contexts/typing.context';
 import { useSound } from '@/hooks';
 import { TypingResult } from '@/types';
 import {
+  PureComponent,
   useCallback,
   useContext,
   useEffect,
@@ -12,7 +13,8 @@ import {
 } from 'react';
 import typewriterSound from '@/assets/audio/typewriter.wav';
 import typingReducer, { initialState } from './reducer/typing.reducer';
-import { getRandomWords } from '@/helpers';
+import { getRandomWords, getTypingWords } from '@/helpers';
+import { getRandomQuoteByLength } from '@/services/quotable';
 interface Props {
   testText?: string;
   secondCaret?: { wordIndex: number; charIndex: number };
@@ -154,8 +156,89 @@ export default function Typing(props: Props) {
       });
     }
   }, [typingStarted]);
+  /**
+   * This callback function is called when the user restarts the typing test.
+   */
+  const onRestart = useCallback(() => {
+    onTypingEnded();
+    onUpdateTypingFocus(false);
 
-  const onRestart = useCallback(() => {}, []);
+    quoteAbortController?.abort();
+    quoteAbortController = new AbortController();
+    setIsLoading(false);
+    setLoadingError(null);
+    if (testText !== undefined) {
+      if (!testText.trim().length) {
+        setIsLoading(true);
+      } else {
+        dispatch({
+          type: 'RESTART',
+          payload: getTypingWords(testText.split(' ')),
+        });
+        setIsLoading(false);
+      }
+    }
+
+    if (!oneVersusOne) {
+      if (mode === 'time') {
+        dispatch({
+          type: 'RESTART',
+          payload: getRandomWords(50, punctuation, numbers),
+        });
+        setTimeCountdown(time);
+      } else if (mode === 'words') {
+        dispatch({
+          type: 'RESTART',
+          payload: getRandomWords(words, punctuation, numbers),
+        });
+      } else {
+        dispatch({
+          type: 'RESTART',
+          payload: [],
+        });
+        setIsLoading(true);
+
+        const tags =
+          quoteTagsMode === 'only selected' && quoteTags.length
+            ? quoteTags.filter(tag => tag.isSelected).map(tag => tag.name)
+            : undefined;
+        getRandomQuoteByLength(quote, tags, quoteAbortController).then(data => {
+          if (
+            (data.statusCode && data.statusCode === 404) ||
+            data.statusCode === 500
+          ) {
+            setLoadingError(data.statusCode);
+            setIsLoading(false);
+            return;
+          }
+          dispatch({
+            type: 'NEW_WORDS',
+            payload: {
+              words: getTypingWords(
+                data.content.replace(/-/g, '-').replace(/…/g, '...').split(' ')
+              ),
+              author: data.author,
+            },
+          });
+          setIsLoading(false);
+          setLoadingError(null);
+        });
+      }
+    }
+  }, [
+    time,
+    mode,
+    words,
+    quote,
+    testText,
+    oneVersusOne,
+    numbers,
+    punctuation,
+    quoteTagsMode, 
+  ]);
+  /**
+   * This function is called when the user attempts to redo the previous typing test.
+   */
   const onRepeat = () => {
     onTypingEnded();
     onUpdateTypingFocus(false);
@@ -247,6 +330,13 @@ export default function Typing(props: Props) {
       setTypemodeVisible(true);
     }
   }, [state.result.showResult]);
-  
+  /**
+   * Effect hook to handle the caret position while typing
+   */
+  useEffect(() => {
+    if (onCaretPositionChange) {
+      onCaretPositionChange(state.wordIndex, state.charIndex);
+    }
+  }, [state.wordIndex, state.charIndex, onCaretPositionChange]);
   return <>Typing</>;
 }
