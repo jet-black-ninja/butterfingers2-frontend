@@ -223,14 +223,30 @@ export default function Typing(props: Props) {
     return () => clearInterval(interval);
   }, [typingStarted, mode, oneVersusOne]);
 
-  /** 
+  /**
    * Effect hook to to show update on time over in time mode
    */
   useEffect(() => {
     if (timeCountdown === 0) {
-      dispatch({ type: "RESULT", payload: time });
+      dispatch({ type: 'RESULT', payload: time });
       onUpdateTypingFocus(false);
     }
   }, [timeCountdown, time]);
+  /**
+   * Effect hook to handle result and update the typemode accordingly
+   */
+  useEffect(() => {
+    if (state.result.showResult) {
+      onTestsCompletedUpdate(state.result);
+      if (onResult) {
+        onResult(state.result);
+        onTypingEnded();
+      }
+      setTypemodeVisible(false);
+    } else {
+      setTypemodeVisible(true);
+    }
+  }, [state.result.showResult]);
+  
   return <>Typing</>;
 }
