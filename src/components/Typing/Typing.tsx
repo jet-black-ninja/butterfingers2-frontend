@@ -4,7 +4,6 @@ import { TypingContext } from '@/contexts/typing.context';
 import { useSound } from '@/hooks';
 import { TypingResult } from '@/types';
 import {
-  PureComponent,
   useCallback,
   useContext,
   useEffect,
@@ -15,6 +14,15 @@ import typewriterSound from '@/assets/audio/typewriter.wav';
 import typingReducer, { initialState } from './reducer/typing.reducer';
 import { getRandomWords, getTypingWords } from '@/helpers';
 import { getRandomQuoteByLength } from '@/services/quotable';
+import Result from './Result/Result';
+import styles from './Typing.module.scss';
+import { Loading } from '../UI';
+import counterStyle from './Counter/Counter.module.scss';
+import Counter from './Counter/Counter';
+import { IconLock } from '@/assets/image';
+import LoadingError from './LoadingError/LoadingError';
+import Input from './Input/Input';
+import Restart from './Restart/Restart';
 interface Props {
   testText?: string;
   secondCaret?: { wordIndex: number; charIndex: number };
@@ -234,7 +242,7 @@ export default function Typing(props: Props) {
     oneVersusOne,
     numbers,
     punctuation,
-    quoteTagsMode, 
+    quoteTagsMode,
   ]);
   /**
    * This function is called when the user attempts to redo the previous typing test.
@@ -338,5 +346,77 @@ export default function Typing(props: Props) {
       onCaretPositionChange(state.wordIndex, state.charIndex);
     }
   }, [state.wordIndex, state.charIndex, onCaretPositionChange]);
-  return <>Typing</>;
+
+  const timelineLatest =
+    state.result.timeline[state.result.timeline.length - 1];
+  return (
+    <div className={styles.typing}>
+      {!state.result.showResult || oneVersusOne ? (
+        <>
+          <div className={styles.liveResult}>
+            {profile.customize.liveWpm && (
+              <div className={styles.liveResultItem}>
+                <span>wpm</span>
+                <span>{timelineLatest?.wpm || '-'}</span>
+              </div>
+            )}
+            {profile.customize.liveAccuracy && (
+              <div className={styles.liveResultItem}>
+                <span>accuracy</span>
+                <span>{timelineLatest?.accuracy || '-'}</span>
+              </div>
+            )}
+          </div>
+          <div
+            className={styles['typing__container']}
+            style={{ width: profile.customize.inputWidth * 0.95 + '%' }}
+          >
+            {oneVersusOne && state.result.showResult ? (
+              <div className={counterStyle.counter}>
+                Waiting for your opponent to finish ...
+              </div>
+            ) : (
+              <Counter
+                mode={oneVersusOne ? 'quote' : mode}
+                counter={
+                  mode === 'time' && !oneVersusOne
+                    ? timeCountdown
+                    : state.wordIndex
+                }
+                wordsLength={state.words.length}
+              />
+            )}
+            {isCapsLockOn && (
+              <div className={styles.capsLock}>
+                <IconLock className={styles.icon} />
+                <p>CAPS LOCK</p>
+              </div>
+            )}
+            {loadingError && state.words.length === 0 ? (
+              <LoadingError status={loadingError} />
+            ) : (
+              <Input
+                words={state.words}
+                wordIndex={state.wordIndex}
+                charIndex={state.charIndex}
+                secondCaret={secondCaret}
+              />
+            )}
+            {!oneVersusOne && (
+              <Restart onRestart={onRestart} className={styles.restart} />
+            )}
+          </div>
+        </>
+      ) : (
+        <Result
+          result={state.result}
+          onRestart={onRestart}
+          onRepeat={onRepeat}
+        />
+      )}
+      {isLoading && (
+        <Loading type="spinner" className={styles['loading-spinner']} />
+      )}
+    </div>
+  );
 }

@@ -19,7 +19,6 @@ function QuoteTagsModal(props: Props) {
     const checkbox = e.target as unknown as HTMLInputElement;
     onToggleQuoteTag(Number(checkbox.value));
   };
-
   return (
     <Modal HeadingIcon={IconTags} heading="Quote Tags" onClose={onClose}>
       <div className={styles.modeContainer}>
@@ -49,7 +48,7 @@ function QuoteTagsModal(props: Props) {
           {quoteTags.map((tag, index) => (
             <label
               className={`${styles.quoteTag} ${tag.isSelected && styles.checked}`}
-              key={tag.name}
+              key={index}
             >
               <input
                 type="checkbox"
@@ -57,14 +56,14 @@ function QuoteTagsModal(props: Props) {
                 value={index}
                 className={styles.quoteTagCheckbox}
               />
-
+              {tag.name}
             </label>
           ))}
         </div>
         <ButtonRounded
           variant="2"
           className={styles.buttonClearTags}
-          onClick={() => onClearSelectedQuoteTags}
+          onClick={() => onClearSelectedQuoteTags()}
           type="button"
         >
           Clear Tags

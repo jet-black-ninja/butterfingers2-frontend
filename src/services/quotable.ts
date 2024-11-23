@@ -1,6 +1,6 @@
 import { QuoteLengthType } from '@/types';
 
-const apiURL = import.meta.env.API_URL;
+const apiURL = 'https://quoteslate.vercel.app';
 
 type QuoteType = {
   author: string;
@@ -15,18 +15,19 @@ type QuoteType = {
 };
 export async function getRandomQuoteByLength(
   length: QuoteLengthType,
-  tags: string[],
+  tags?: string[],
   abortController?: AbortController | null
 ) {
   const response = await fetch(
-    `${apiURL}/random${tags?.length ? '?tags=' + tags.join('|') : ''}
+    `${apiURL}/api/quotes/random
+    // ${tags?.length ? '?tags=' + tags.join('|') : ''}
         ${
           length === 'short'
-            ? '?maxlength= 100'
+            ? '?maxLength=100'
             : length === 'medium'
-              ? '?minLength = 101&maxLength=250'
+              ? '?minLength=101&maxLength=250'
               : length === 'long'
-                ? 'minLength=251'
+                ? '?minLength=251'
                 : ''
         }`,
     {
@@ -38,6 +39,6 @@ export async function getRandomQuoteByLength(
 }
 
 export async function getQuoteTagList() {
-    const response = await fetch(`${apiURL}/tags`);
-    return await response.json();
+  const response = await fetch(`${apiURL}/api/tags`);
+  return await response.json();
 }
