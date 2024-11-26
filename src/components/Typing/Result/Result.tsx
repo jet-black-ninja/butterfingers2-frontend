@@ -56,7 +56,6 @@ export default function Result(props: Props) {
     accuracy,
     second: timeTook,
   } = result.timeline[result.timeline.length - 1];
-
   return (
     <div className={styles['result__wrapper']}>
       {includeDate && result.date && (
