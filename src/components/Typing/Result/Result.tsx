@@ -152,7 +152,74 @@ export default function Result(props: Props) {
           </ResponsiveContainer>
         </div>
       </div>
-      ;
+      <div className={styles['more-and-restart']}>
+        <div className={styles.more}>
+          {result.testType && (
+            <div className={styles.item}>
+              <p
+                className={`${styles['item__heading']} ${styles['raw-heading']}`}
+              >
+                Test Type
+              </p>
+              <p className={styles['item-value']}>{result.testType}</p>
+            </div>
+          )}
+          <div className={styles.item}>
+            <p
+              className={`${styles['item__heading']} ${styles['raw-heading']}`}
+            >
+              raw
+            </p>
+            <p className={styles['item_value']}>{raw}</p>
+          </div>
+          <div className={styles.item}>
+            <p
+              className={`${styles['item__heading']} ${styles['error-heading']} ${result.errors === 0 && styles['error-heading--noerrors']}`}
+            >
+              Errors
+            </p>
+            <p className={styles['item_value']}>{result.errors}</p>
+          </div>
+          <div className={styles.item}>
+            <p className={styles['item__heading']}>quote author</p>
+            <p className={styles['item__value']}>{timeTook}s</p>
+          </div>
+          {result.quoteAuthor && (
+            <div className={styles.item}>
+              <p className={styles['item__heading']}>quote author</p>
+              <p
+                className={`${styles['item__value']} ${styles['quote-author-value']}`}
+              >
+                {result.quoteAuthor}
+              </p>
+            </div>
+          )}
+        </div>
+        <div className={styles['buttons-wrapper']}>
+          {onRestart && (
+            <ButtonRounded onClick={onRestart} className={styles.btn}>
+              <IconKeyboardArrowLeft
+                className={`${styles['btn__icon']} ${styles['btn__icon--arrow']}`}
+              />
+              <span>Next Test</span>
+            </ButtonRounded>
+          )}
+          {onRepeat && (
+            <ButtonRounded onClick={onRepeat} className={styles.btn}>
+              <IconLoop className={styles['btn__icon']} />
+              <span>Repeat</span>
+            </ButtonRounded>
+          )}
+          {onGoBack && (
+            <ButtonRounded onClick={onGoBack} className={styles.btn}>
+              <IconKeyboardArrowLeft
+                className={`${styles['btn__icon']} ${styles['btn__icon--arrow']}`}
+              />
+              <span>Go Back</span>
+            </ButtonRounded>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
