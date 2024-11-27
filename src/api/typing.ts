@@ -3,10 +3,16 @@ import { data } from '@/data';
 import axios from 'axios';
 
 export async function TypingStarted() {
-  const res = await axios.post(`${data.apiUrl}/typing/started`, {
-    withCredentials: true,
+  const res = await fetch(data.apiUrl + '/typing/started', {
+    method: 'POST',
+    credentials: 'include',
   });
-  return res.data;
+
+  if (!res.ok) {
+    throw new Error(await res.json());
+  }
+
+  return res.json();
 }
 export async function TypingCompleted(result: TypingResult) {
   const transformedResult = { ...result };

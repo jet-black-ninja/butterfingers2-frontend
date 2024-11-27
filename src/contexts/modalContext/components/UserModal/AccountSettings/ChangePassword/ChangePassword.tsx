@@ -57,9 +57,6 @@ function ChangePassword(props: Props) {
         }}
         onChange={e => onFieldChange(e, 'oldPassword')}
         classNameContainer={styles.oldPassword}
-        style={{
-          marginBottom: '24px',
-        }}
       />
       <InputField
         Icon={IconPassword}

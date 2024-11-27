@@ -1,8 +1,3 @@
-import { ProfileContext } from '@/contexts/profile.context';
-import { TypemodeContext } from '@/contexts/typemode.context';
-import { TypingContext } from '@/contexts/typing.context';
-import { useSound } from '@/hooks';
-import { TypingResult } from '@/types';
 import {
   useCallback,
   useContext,
@@ -10,7 +5,12 @@ import {
   useReducer,
   useState,
 } from 'react';
-import typewriterSound from '@/assets/audio/typewriter.wav';
+import { ProfileContext } from '@/contexts/profile.context';
+import { TypemodeContext } from '@/contexts/typemode.context';
+import { TypingContext } from '@/contexts/typing.context';
+import { useSound } from '@/hooks';
+import { TypingResult } from '@/types';
+import typewriterSound from '@/assets/audio/sound 2.wav';
 import typingReducer, { initialState } from './reducer/typing.reducer';
 import { getRandomWords, getTypingWords } from '@/helpers';
 import { getRandomQuoteByLength } from '@/services/quoteSlate';
@@ -68,7 +68,7 @@ export default function Typing(props: Props) {
 
   const { profile, onTestsStartedUpdate, onTestsCompletedUpdate } =
     useContext(ProfileContext);
-  const [isCapsLockOn, setIsCapsLockOn] = useState(false);
+  const [isCapsLock, setIsCapsLock] = useState(false);
   const [timeCountdown, setTimeCountdown] = useState<number>(time);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<404 | 500 | null>(null);
@@ -79,13 +79,16 @@ export default function Typing(props: Props) {
     isLoading ||
     loadingError ||
     (oneVersusOne && !typingStarted);
+
   useEffect(() => {
     const handleMouseMove = () => {
       onUpdateTypingFocus(false);
     };
+
     if (typingFocused) {
       document.addEventListener('mousemove', handleMouseMove);
     }
+
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
     };
@@ -94,34 +97,33 @@ export default function Typing(props: Props) {
   useEffect(() => {
     const typeHandler = (event: KeyboardEvent) => {
       const { key } = event;
+
       if (key === 'Escape') {
         onUpdateTypingFocus(false);
-      }
-      if (event.getModifierState && event.getModifierState('CapsLock')) {
-        setIsCapsLockOn(true);
-      } else {
-        false;
+        onRepeat();
       }
 
+      if (event.getModifierState && event.getModifierState('CapsLock')) {
+        setIsCapsLock(true);
+      } else {
+        setIsCapsLock(false);
+      }
       if (event.ctrlKey && key === 'Backspace') {
         onUpdateTypingFocus(true);
         if (profile.customize.soundOnClick) playTypingSound();
         return dispatch({ type: 'DELETE_WORD' });
       }
-
       if (key === 'Backspace') {
-        onUpdateTypingFocus(false);
+        onUpdateTypingFocus(true);
         if (profile.customize.soundOnClick) playTypingSound();
         return dispatch({ type: 'DELETE_KEY' });
       }
-
       if (key === ' ') {
         event.preventDefault();
-        onUpdateTypingFocus(false);
+        onUpdateTypingFocus(true);
         if (profile.customize.soundOnClick) playTypingSound();
         return dispatch({ type: 'NEXT_WORD' });
       }
-
       if (key.length === 1) {
         if (!typingStarted && !oneVersusOne) {
           onTypingStarted();
@@ -130,14 +132,12 @@ export default function Typing(props: Props) {
         if (profile.customize.soundOnClick) playTypingSound();
         return dispatch({ type: 'TYPE', payload: key });
       }
-
-      if (state.result.showResult || isTypingDisabled) {
-        document.removeEventListener('keydown', typeHandler);
-      } else {
-        document.addEventListener('keydown', typeHandler);
-      }
-      return () => document.removeEventListener('keydown', typeHandler);
     };
+    if (state.result.showResult || isTypingDisabled) {
+      document.removeEventListener('keydown', typeHandler);
+    } else document.addEventListener('keydown', typeHandler);
+
+    return () => document.removeEventListener('keydown', typeHandler);
   }, [
     typingStarted,
     onTypingStarted,
@@ -386,7 +386,7 @@ export default function Typing(props: Props) {
                 wordsLength={state.words.length}
               />
             )}
-            {isCapsLockOn && (
+            {isCapsLock && (
               <div className={styles.capsLock}>
                 <IconLock className={styles.icon} />
                 <p>CAPS LOCK</p>

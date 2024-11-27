@@ -1,51 +1,65 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { TypingWords } from '../types';
-import styles from './Input.module.scss';
 import { TypingContext } from '@/contexts/typing.context';
 import { ProfileContext } from '@/contexts/profile.context';
+import { TypingWords } from '../types';
 import Caret from './Caret/Caret';
+import styles from './Input.module.scss';
+
 interface Props {
   words: TypingWords;
   wordIndex: number;
   charIndex: number;
+
+  /* Used for the 1v1 mode */
   secondCaret?: { wordIndex: number; charIndex: number };
 }
-function Input(props: Props) {
+
+export default function Input(props: Props) {
   const { words, wordIndex, charIndex, secondCaret } = props;
+
   const { typingStarted, typingFocused, lineHeight, setLineHeight } =
     useContext(TypingContext);
   const { profile } = useContext(ProfileContext);
   const [wordsOffset, setWordsOffset] = useState(0);
+
   const wordWrapperRef = useRef<HTMLDivElement>(null);
   const wordRef = useRef<HTMLDivElement>();
   const charRef = useRef<HTMLSpanElement>();
   const hiddenInputRef = useRef<HTMLInputElement>(null);
+
   const secondCaretWordRef = useRef<HTMLDivElement>();
   const secondCaretCharRef = useRef<HTMLSpanElement>();
   useEffect(() => {
     if (typingStarted) hiddenInputRef.current?.focus();
   }, [typingStarted]);
+
   useEffect(() => {
     if (!wordWrapperRef.current) return;
     const { offsetTop, clientHeight } = wordWrapperRef.current;
     setWordsOffset(Math.max(offsetTop - clientHeight, 0));
   }, [charIndex]);
+
   const firstWord = words[0]?.chars.join('');
+
   useEffect(() => {
     setLineHeight(state => wordWrapperRef.current?.clientHeight || state);
+
     const interval = setInterval(function () {
       setLineHeight(state => {
         if (state === 0 || wordWrapperRef.current?.clientHeight !== state) {
           return wordWrapperRef.current?.clientHeight || state;
         }
+
         clearInterval(interval);
         return state;
       });
     }, 200);
+
     return () => {
       clearInterval(interval);
     };
   }, [profile.customize.fontSize]);
+
   return (
     <div className={styles.wrapper} style={{ height: lineHeight * 3 }}>
       {words.length !== 0 && profile.customize.caretStyle !== 'off' && (
@@ -142,5 +156,3 @@ function Input(props: Props) {
     </div>
   );
 }
-
-export default Input;

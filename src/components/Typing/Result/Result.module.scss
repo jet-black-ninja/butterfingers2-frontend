@@ -107,3 +107,57 @@
     width: 90%;
   }
 }
+.item {
+  text-align: center;
+  &__heading {
+    color: var(--clr-char);
+  }
+  &__value {
+    margin-top: 4px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+.raw-heading {
+  color: var(--clr-raw);
+}
+.error-heading {
+  color: var(--clr-char-incorrect);
+  &--noerrors {
+    color: var(--clr-char-correct);
+  }
+}
+.buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.btn {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 10px;
+  margin-top: 10px;
+  &:not(:last-child) {
+    margin-right: 20px;
+  }
+  &__icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    &--arrow {
+      transform: scale(1.75);
+    }
+  }
+}
+.date {
+  text-align: center;
+  opacity: 0.8;
+}
+.cartesianGrid {
+  stroke: var(--clr-text);
+  opacity: 0.07;
+}

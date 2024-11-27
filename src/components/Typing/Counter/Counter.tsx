@@ -8,7 +8,7 @@ interface Props {
 }
 function Counter(props: Props) {
   const { mode, counter, wordsLength } = props;
-  const calcSeconds = mode === 'time' && String(counter & 60).padStart(2, '0');
+  const calcSeconds = mode === 'time' && String(counter % 60).padStart(2, '0');
   return (
     <div className={styles.counter}>
       {mode === 'time' ? (

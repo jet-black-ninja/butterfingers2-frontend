@@ -1,19 +1,20 @@
+import { TypingResult } from '@/types';
+import { TypingWords } from '../types';
 import {
   type,
-  start,
   nextWord,
   deleteKey,
   deleteWord,
   addWords,
-  newWords,
   restart,
   timeline,
   result,
+  newWords,
+  start,
 } from './actions';
-import { TypingResult } from '@/types';
-import { TypingWords } from '../types';
 
 export type TypingResultReducer = TypingResult & { showResult: boolean };
+
 export type TypingState = {
   wordIndex: number;
   charIndex: number;

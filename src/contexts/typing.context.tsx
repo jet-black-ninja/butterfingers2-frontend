@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 import { TypingResult } from '@/types';
-import { ResultOptions } from '@/components/Typing/Result';
+import { ResultOptions } from '@/components/Typing/Result/Result';
 
 interface Context {
   typingStarted: boolean;
@@ -74,7 +74,7 @@ const TypingContextProvider = ({ children }: Props) => {
   const onTypingAllow = () => setTypingDisabled(false);
 
   const onPreviewResult: Context['onPreviewResult'] = (result, options) => {
-    setResultPreview(result ? { state: result, options } : null);
+    setResultPreview(result ? { state: result, options: options || {} } : null);
   };
 
   const onUpdateTypingFocus: Context['onUpdateTypingFocus'] = bool => {
