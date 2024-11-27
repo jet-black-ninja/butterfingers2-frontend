@@ -5,7 +5,7 @@ const apiURL = 'https://quoteslate.vercel.app';
 type QuoteType = {
   author: string;
   authorSlug: string;
-  content: string;
+  quote: string;
   dateAdded: string;
   dateModified: string;
   length: number;
