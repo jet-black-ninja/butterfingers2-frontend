@@ -13,7 +13,7 @@ import {
 import typewriterSound from '@/assets/audio/typewriter.wav';
 import typingReducer, { initialState } from './reducer/typing.reducer';
 import { getRandomWords, getTypingWords } from '@/helpers';
-import { getRandomQuoteByLength } from '@/services/quotable';
+import { getRandomQuoteByLength } from '@/services/quoteSlate';
 import Result from './Result/Result';
 import styles from './Typing.module.scss';
 import { Loading } from '../UI';
