@@ -37,7 +37,11 @@ function UserModal(props: Props) {
           Account Setting
         </button>
       </div>
-      {activeTab === 'profile' ? <Profile /> : <AccountSettings />}
+      {activeTab === 'profile' ? (
+        <Profile onCloseModal={onClose} />
+      ) : (
+        <AccountSettings />
+      )}
     </Modal>
   );
 }
