@@ -167,7 +167,7 @@ export default function Result(props: Props) {
             <p
               className={`${styles['item__heading']} ${styles['raw-heading']}`}
             >
-              raw
+              Raw
             </p>
             <p className={styles['item_value']}>{raw}</p>
           </div>
@@ -180,12 +180,12 @@ export default function Result(props: Props) {
             <p className={styles['item_value']}>{result.errors}</p>
           </div>
           <div className={styles.item}>
-            <p className={styles['item__heading']}>quote author</p>
+            <p className={styles['item__heading']}>Time Took</p>
             <p className={styles['item__value']}>{timeTook}s</p>
           </div>
           {result.quoteAuthor && (
             <div className={styles.item}>
-              <p className={styles['item__heading']}>quote author</p>
+              <p className={styles['item__heading']}>Quote Author</p>
               <p
                 className={`${styles['item__value']} ${styles['quote-author-value']}`}
               >
