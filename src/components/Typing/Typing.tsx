@@ -79,14 +79,16 @@ export default function Typing(props: Props) {
     isLoading ||
     loadingError ||
     (oneVersusOne && !typingStarted);
-  
+
   useEffect(() => {
     const handleMouseMove = () => {
       onUpdateTypingFocus(false);
     };
+
     if (typingFocused) {
       document.addEventListener('mousemove', handleMouseMove);
     }
+
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
     };
