@@ -84,7 +84,7 @@ export async function LogIn(
       withCredentials: true,
       signal: abortController?.signal,
     });
-    
+
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -112,12 +112,23 @@ export async function LogIn(
 }
 
 export async function LogOut() {
-  const res = await axios.post(`${data.apiUrl}/auth/logout`, {
-    withCredentials: true,
+  const res = await fetch(`${data.apiUrl}/auth/logout`, {
+    method: 'POST',
+    credentials: 'include',
   });
-  return res.data;
+
+  if (!res.ok) {
+    return res.text().then(text => {
+      throw new Error(text);
+    });
+  }
+
+  return res.json();
 }
-export async function httpChangeUsername(newUsername: string, password: string) {
+export async function httpChangeUsername(
+  newUsername: string,
+  password: string
+) {
   const res = await axios.post(
     `${data.apiUrl}/auth/change-username`,
     { newUsername, password },
@@ -131,7 +142,10 @@ export async function httpChangeUsername(newUsername: string, password: string) 
   );
   return res.data;
 }
-export async function httpChangePassword(newPassword: string, oldPassword: string) {
+export async function httpChangePassword(
+  newPassword: string,
+  oldPassword: string
+) {
   const res = await axios.post(
     `${data.apiUrl}/auth/change-password`,
     { newPassword, oldPassword },

@@ -10,7 +10,7 @@ import { TypemodeContext } from '@/contexts/typemode.context';
 import { TypingContext } from '@/contexts/typing.context';
 import { useSound } from '@/hooks';
 import { TypingResult } from '@/types';
-import typewriterSound from '@/assets/audio/typewriter.wav';
+import typewriterSound from '@/assets/audio/sound 2.wav';
 import typingReducer, { initialState } from './reducer/typing.reducer';
 import { getRandomWords, getTypingWords } from '@/helpers';
 import { getRandomQuoteByLength } from '@/services/quotable';
@@ -100,6 +100,7 @@ export default function Typing(props: Props) {
 
       if (key === 'Escape') {
         onUpdateTypingFocus(false);
+        onRepeat();
       }
 
       if (event.getModifierState && event.getModifierState('CapsLock')) {
