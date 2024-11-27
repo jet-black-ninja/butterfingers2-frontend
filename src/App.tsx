@@ -47,17 +47,23 @@ function App() {
           }`}
         />
       )}
-      <main className={`${styles.main} ${!roomCode && typemodeVisible ? styles.mainMarginBottom : ''}`}>
-        {roomCode ? (<OneVersusOne roomCode={roomCode} />) : (
+      <main
+        className={`${styles.main} ${!roomCode && typemodeVisible ? styles.mainMarginBottom : ''}`}
+      >
+        {roomCode ? (
+          <OneVersusOne roomCode={roomCode} />
+        ) : (
           <>
             {resultPreview ? (
-              <Result result={resultPreview.state}
-              onGoBack = {() => onPreviewResult(null)}
-              {...resultPreview.options} />
-            ) :
-            <Typing />
-            
-            }</>
+              <Result
+                result={resultPreview.state}
+                onGoBack={() => onPreviewResult(null)}
+                {...resultPreview.options}
+              />
+            ) : (
+              <Typing />
+            )}
+          </>
         )}
       </main>
       <Footer />

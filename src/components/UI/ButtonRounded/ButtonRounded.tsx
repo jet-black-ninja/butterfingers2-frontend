@@ -18,7 +18,6 @@ export default forwardRef<Ref, Props>(function ButtonRounded(props, ref) {
     active,
     ...restProps
   } = props;
-  //TODO active class not working
   return (
     <button
       className={`${styles.button} ${styles[`button--${variant}`]} 
