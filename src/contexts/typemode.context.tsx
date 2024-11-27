@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { getQuoteTagList } from '@/services/quotable';
+import { getQuoteTagList } from '@/services/quoteSlate';
 import { QuoteLengthType } from '@/types';
 import { useLocalStorageState } from '@/hooks';
 import { TypemodeTime, TypemodeType, TypemodeWords } from '@/data/types';
@@ -82,7 +82,7 @@ export const TypemodeContextProvider = ({ children }: Props) => {
   useEffect(() => {
     getQuoteTagList().then(data => {
       const quoteTagsData: QuoteTagsType = data.map((tag: any) => ({
-        name: tag.name,
+        name: tag,
         isSelected: false,
       }));
       setQuoteTags(quoteTagsData);

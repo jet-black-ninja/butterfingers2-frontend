@@ -22,7 +22,6 @@ function Input(props: Props) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const secondCaretWordRef = useRef<HTMLDivElement>();
   const secondCaretCharRef = useRef<HTMLSpanElement>();
-
   useEffect(() => {
     if (typingStarted) hiddenInputRef.current?.focus();
   }, [typingStarted]);

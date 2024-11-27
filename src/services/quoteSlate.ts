@@ -19,17 +19,7 @@ export async function getRandomQuoteByLength(
   abortController?: AbortController | null
 ) {
   const response = await fetch(
-    `${apiURL}/api/quotes/random
-    // ${tags?.length ? '?tags=' + tags.join('|') : ''}
-        ${
-          length === 'short'
-            ? '?maxLength=100'
-            : length === 'medium'
-              ? '?minLength=101&maxLength=250'
-              : length === 'long'
-                ? '?minLength=251'
-                : ''
-        }`,
+    `${apiURL}/api/quotes/random${length === 'short' ? '?maxLength=100' : length === 'medium' ? '?minLength=101&maxLength=250' : length === 'long' ? '?minLength=251' : ''}${tags?.length ? '&tags=' + tags.join(',') : ''}`,
     {
       method: 'get',
       signal: abortController?.signal,
@@ -40,5 +30,6 @@ export async function getRandomQuoteByLength(
 
 export async function getQuoteTagList() {
   const response = await fetch(`${apiURL}/api/tags`);
+
   return await response.json();
 }
