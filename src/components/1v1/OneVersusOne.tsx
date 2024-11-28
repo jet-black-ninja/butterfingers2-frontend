@@ -186,7 +186,7 @@ function OneVersusOne(props: Props) {
       {roomState?.players.player2 ? (
         showResult ? (
           <Results
-            playerState={roomState.players}
+            playersState={roomState.players}
             currentPlayer={currentPlayer}
             opponentPlayer={opponentPlayer}
             onPlayAgain={handlePlayAgain}
