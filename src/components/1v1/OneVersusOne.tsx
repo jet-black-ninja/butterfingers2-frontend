@@ -1,13 +1,20 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import styles from './OneVersusOne.module.scss';
 import { TypingContext } from '@/contexts/typing.context';
-import { OneVersusOnePlayerState, OneVersusOneStateType } from '@/types';
+import {
+  OneVersusOnePlayerState,
+  OneVersusOneStateType,
+  TypingResult,
+} from '@/types';
 import socket from '@/api/socket';
-import { disconnect } from 'process';
+import Results from './Results/Results';
+import Typing from '../Typing/Typing';
+import { IconUser } from '@/assets/image';
+import { Loading } from '../UI';
 interface Props {
   roomCode: string | null;
 }
-let countDownInterval = NodeJS.Timeout;
+let countDownInterval: NodeJS.Timeout;
 function OneVersusOne(props: Props) {
   const { roomCode } = props;
   const { onTypingStarted } = useContext(TypingContext);
@@ -126,7 +133,107 @@ function OneVersusOne(props: Props) {
     };
   }, [onTypingStarted, opponentPlayer, currentPlayer]);
 
-  return <div className="">One Versus One</div>;
+  const handleCaretPositionChange = useCallback(
+    (wordIndex: number, charIndex: number) => {
+      socket.emit('caret-position-change', { wordIndex, charIndex });
+    },
+    []
+  );
+  const handleResult = useCallback(
+    (result: TypingResult) => {
+      socket.emit('result', result);
+      setRoomState(state => {
+        if (!state) return null;
+        return {
+          ...state,
+          players: {
+            ...state.players,
+            [currentPlayer]: {
+              ...state.players[currentPlayer],
+              result,
+            } as OneVersusOnePlayerState,
+          },
+        };
+      });
+    },
+    [currentPlayer]
+  );
+  const handlePlayAgain = useCallback(() => {
+    socket.emit('play-again');
+    setRoomState(state => {
+      if (!state) return null;
+      return {
+        ...state,
+        players: {
+          ...state.players,
+          [currentPlayer]: { ...state.players[currentPlayer], playAgain: true },
+        },
+      };
+    });
+  }, [currentPlayer]);
+
+  const showResult =
+    currentPlayerState?.result &&
+    (currentPlayerState?.result || opponentPlayerState?.disconnected);
+
+  useEffect(() => {
+    if (showResult) {
+      setStartsInSeconds(null);
+    }
+  }, [showResult]);
+  return (
+    <>
+      {roomState?.players.player2 ? (
+        showResult ? (
+          <Results
+            playerState={roomState.players}
+            currentPlayer={currentPlayer}
+            opponentPlayer={opponentPlayer}
+            onPlayAgain={handlePlayAgain}
+          />
+        ) : (
+          <div className={styles.typingWrapper}>
+            {startsInSeconds !== null && (
+              <span
+                className={`${styles.countdown} ${!startsInSeconds && styles.countdownFadeOut}`}
+              >
+                {startsInSeconds || 'GO!'}
+              </span>
+            )}
+            <Typing
+              testText={roomState!.testText || ''}
+              typeModeCustom={`quote ${roomState.quoteLength}`}
+              onCaretPositionChange={handleCaretPositionChange}
+              secondCaret={{
+                wordIndex: opponentPlayerState?.wordIndex || 0,
+                charIndex: opponentPlayerState?.charIndex || 0,
+              }}
+              oneVersusOne
+              onResult={handleResult}
+            />
+          </div>
+        )
+      ) : (
+        <div className={styles.waitingWrapper}>
+          <div className={styles.roomCode}>
+            <span className={styles.roomCodeText}>Room Code:</span>
+            <span className={styles.roomCodeTextCode}>{roomCode}</span>
+          </div>
+          <div className={styles.players}>
+            <div className={styles.player}>
+              <span className={styles.playerText}>You</span>
+              <IconUser className={styles.IconUser} />
+            </div>
+            <span className={styles.textVs}>vs</span>
+            <div className={styles.player}>
+              <span className={styles.playerText}>Opponent</span>
+              <Loading type="dot-flashing" />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
 export default OneVersusOne;
