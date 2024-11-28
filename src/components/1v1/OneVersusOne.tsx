@@ -10,7 +10,7 @@ import socket from '@/api/socket';
 import Results from './Results/Results';
 import Typing from '../Typing/Typing';
 import { IconUser } from '@/assets/image';
-import { Loading } from '../UI';
+import { CopyButton, Loading } from '../UI';
 interface Props {
   roomCode: string | null;
 }
@@ -218,6 +218,10 @@ function OneVersusOne(props: Props) {
           <div className={styles.roomCode}>
             <span className={styles.roomCodeText}>Room Code:</span>
             <span className={styles.roomCodeTextCode}>{roomCode}</span>
+            <CopyButton
+              className={styles.roomCodeCopyButton}
+              value={roomCode}
+            />
           </div>
           <div className={styles.players}>
             <div className={styles.player}>

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { IconContentCopy } from '@/assets/image';
 
 interface Props {
-  value: string;
+  value: string | null;
   className?: string;
 }
 function CopyButton(props: Props) {
