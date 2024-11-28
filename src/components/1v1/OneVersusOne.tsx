@@ -1,11 +1,13 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import styles from './OneVersusOne.module.scss';
 import { TypingContext } from '@/contexts/typing.context';
-import { OneVersusOneStateType } from '@/types';
+import { OneVersusOnePlayerState, OneVersusOneStateType } from '@/types';
 import socket from '@/api/socket';
+import { disconnect } from 'process';
 interface Props {
   roomCode: string | null;
 }
+let countDownInterval = NodeJS.Timeout;
 function OneVersusOne(props: Props) {
   const { roomCode } = props;
   const { onTypingStarted } = useContext(TypingContext);
@@ -70,7 +72,60 @@ function OneVersusOne(props: Props) {
         });
       }
     );
-  });
+
+    socket.on('typing-starts-in', (ms: number) => {
+      setStartsInSeconds(Math.max(Math.ceil(ms / 1000), 1));
+    });
+    socket.on('typing-started', () => {
+      clearInterval(countDownInterval);
+      setStartsInSeconds(0);
+      onTypingStarted();
+    });
+
+    socket.on('opponent-play-again', () => {
+      setRoomState(state => {
+        if (!state) return null;
+        return {
+          ...state,
+          players: {
+            ...state.players,
+            [opponentPlayer]: {
+              ...state.players[opponentPlayer],
+              playAgain: true,
+            },
+          },
+        };
+      });
+    });
+
+    socket.on('opponent-disconnected', () => {
+      setRoomState(state => {
+        if (!state) return null;
+
+        return {
+          ...state,
+          players: {
+            ...state.players,
+            [opponentPlayer]: {
+              ...state.players[opponentPlayer],
+              disconnected: true,
+            } as OneVersusOnePlayerState,
+          },
+        };
+      });
+    });
+    return () => {
+      socket.off('room-state');
+      socket.off('test-text');
+      socket.off('player-state');
+      socket.off('caret-position-change');
+      socket.off('typing-starts-in');
+      socket.off('typing-started');
+      socket.off('opponent-play-again');
+      socket.off('opponent-disconnected');
+    };
+  }, [onTypingStarted, opponentPlayer, currentPlayer]);
+
   return <div className="">One Versus One</div>;
 }
 
