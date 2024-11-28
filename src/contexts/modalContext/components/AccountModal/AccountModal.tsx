@@ -1,6 +1,8 @@
 import {
   IconAccount,
   IconCustomize,
+  IconGithub,
+  IconGoogle,
   IconHistory,
   IconStats,
 } from '@/assets/image';
@@ -57,6 +59,37 @@ function AccountModal(props: Props) {
         </button>
       </div>
       {tab === 'create-account' ? <CreateNewAccount /> : <Login />}
+      {googleClientID ||
+        (githubClientID && (
+          <>
+            <div className={styles.dividerText}>
+              <div className={styles.dividerTextContent}>
+                <div>or</div>
+                <div>Continue WIth</div>
+              </div>
+            </div>
+            <div className={styles.oauthWrapper}>
+              {googleClientID && (
+                <a
+                  className={`${styles.oauthLink} ${styles.oauthLinkGoogle}`}
+                  href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientID}&redirect_uri=${serverURL}/auth/google/access-token&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&state=google`}
+                >
+                  <IconGoogle className={styles.oauthLinkIcon} />
+                  <span>Google</span>
+                </a>
+              )}
+              {githubClientID && (
+                <a
+                  className={`${styles.oauthLink} ${styles.oauthLinkGithub}`}
+                  href={`https://github.com/login/oauth/authorize?client_id=${githubClientID}&state=github`}
+                >
+                  <IconGithub className={styles.oauthLinkIcon} />
+                  <span>GitHub</span>
+                </a>
+              )}
+            </div>
+          </>
+        ))}
       {tab === 'create-account' && (
         <>
           <div className={styles.dividerText}>
