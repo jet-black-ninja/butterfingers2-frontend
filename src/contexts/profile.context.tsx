@@ -5,7 +5,6 @@ import { createContext, useEffect, useState } from 'react';
 import { OAuthFinalStepsModalOptions } from './modalContext/components/OAuthFinalStepsModal/OAuthFinalStepsModal';
 import { ISOToDate } from '@/helpers';
 import { TypingCompleted, TypingStarted } from '@/api/typing';
-import { setPriority } from 'os';
 
 interface CustomizeBooleans {
   liveWpm: boolean;
