@@ -1,3 +1,5 @@
+import { useContext, useEffect, useState } from 'react';
+import { ProfileContext } from '@/contexts/profile.context';
 import {
   IconAccount,
   IconCustomize,
@@ -6,25 +8,27 @@ import {
   IconHistory,
   IconStats,
 } from '@/assets/image';
-import { Modal } from '@/components/UI';
-import { ProfileContext } from '@/contexts/profile.context';
-import { useContext, useEffect, useState } from 'react';
+import Modal from '@/components/UI/Modal/Modal';
+import CreateAccount from './CreateNewAccount/CreateNewAccount';
+import LogIn from './Login/Login';
 import styles from './AccountModal.module.scss';
-import CreateNewAccount from './CreateNewAccount/CreateNewAccount';
-import Login from './Login/Login';
+
 interface Props {
   onClose: () => void;
 }
-function AccountModal(props: Props) {
+
+export default function AccountModal(props: Props) {
   const { onClose } = props;
+
   const { profile } = useContext(ProfileContext);
   const [tab, setTab] = useState<'create-account' | 'log-in'>('create-account');
 
-  const serverURL = import.meta.env.PROD;
-
-  const githubClientID: string | undefined = import.meta.env
+  const serverUrl = import.meta.env.PROD
+    ? import.meta.env.VITE_SERVER_URL
+    : 'http://localhost:8080';
+  const githubClientId: string | undefined = import.meta.env
     .VITE_GITHUB_CLIENT_ID;
-  const googleClientID: string | undefined = import.meta.env
+  const googleClientId: string | undefined = import.meta.env
     .VITE_GOOGLE_CLIENT_ID;
 
   useEffect(() => {
@@ -35,9 +39,9 @@ function AccountModal(props: Props) {
 
   return (
     <Modal
-      onClose={onClose}
-      heading="Account"
       HeadingIcon={IconAccount}
+      heading="Account"
+      onClose={onClose}
       className={styles.modal}
     >
       <div className={styles.topContainer}>
@@ -58,57 +62,61 @@ function AccountModal(props: Props) {
           Log In
         </button>
       </div>
-      {tab === 'create-account' ? <CreateNewAccount /> : <Login />}
-      {googleClientID ||
-        (githubClientID && (
-          <>
-            <div className={styles.dividerText}>
-              <div className={styles.dividerTextContent}>
-                <div>or</div>
-                <div>Continue WIth</div>
-              </div>
+
+      {tab === 'create-account' ? <CreateAccount /> : <LogIn />}
+
+      {(googleClientId || githubClientId) && (
+        <>
+          <div className={styles.dividerText}>
+            <div className={styles.dividerTextContent}>
+              <div>or</div>
+              <div>Continue with</div>
             </div>
-            <div className={styles.oauthWrapper}>
-              {googleClientID && (
-                <a
-                  className={`${styles.oauthLink} ${styles.oauthLinkGoogle}`}
-                  href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientID}&redirect_uri=${serverURL}/auth/google/access-token&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&state=google`}
-                >
-                  <IconGoogle className={styles.oauthLinkIcon} />
-                  <span>Google</span>
-                </a>
-              )}
-              {githubClientID && (
-                <a
-                  className={`${styles.oauthLink} ${styles.oauthLinkGithub}`}
-                  href={`https://github.com/login/oauth/authorize?client_id=${githubClientID}&state=github`}
-                >
-                  <IconGithub className={styles.oauthLinkIcon} />
-                  <span>GitHub</span>
-                </a>
-              )}
-            </div>
-          </>
-        ))}
+          </div>
+
+          <div className={styles.oauthWrapper}>
+            {googleClientId && (
+              <a
+                className={`${styles.oauthLink} ${styles.oauthLinkGoogle}`}
+                href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${serverUrl}/auth/google/access-token&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&state=google`}
+              >
+                <IconGoogle className={styles.oauthLinkIcon} />
+                <span>Google</span>
+              </a>
+            )}
+            {githubClientId && (
+              <a
+                className={`${styles.oauthLink} ${styles.oauthLinkGithub}`}
+                href={`https://github.com/login/oauth/authorize?client_id=${githubClientId}&state=github`}
+              >
+                <IconGithub className={styles.oauthLinkIcon} />
+                <span>GitHub</span>
+              </a>
+            )}
+          </div>
+        </>
+      )}
+
       {tab === 'create-account' && (
         <>
           <div className={styles.dividerText}>
             <div className={styles.dividerTextContent}>
-              <div>Account Benefits</div>
+              <div>Account benefits</div>
             </div>
           </div>
+
           <ul className={styles.benefits}>
             <li className={styles.benefitsItem}>
               <IconStats className={styles.benefitsItemIcon} />
-              <span>Personal Stats</span>
+              <span>Personal Stats.</span>
             </li>
             <li className={styles.benefitsItem}>
               <IconHistory className={styles.benefitsItemIcon} />
-              <span>Previous Results(history)</span>
+              <span>Previous results (History).</span>
             </li>
             <li className={styles.benefitsItem}>
               <IconCustomize className={styles.benefitsItemIcon} />
-              <span>Customizations saved to cloud</span>
+              <span>Customizations saved to the account.</span>
             </li>
           </ul>
         </>
@@ -116,5 +124,3 @@ function AccountModal(props: Props) {
     </Modal>
   );
 }
-
-export default AccountModal;
