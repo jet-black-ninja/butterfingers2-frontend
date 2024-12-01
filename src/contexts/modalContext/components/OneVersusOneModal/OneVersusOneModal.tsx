@@ -34,7 +34,6 @@ function OneVersusOneModal(props: Props) {
     };
   }, []);
   const onCreateRoom = () => {
-    console.log('here');
     socket.emit('create-room', quoteLength);
   };
   const onJoinRoom = () => {

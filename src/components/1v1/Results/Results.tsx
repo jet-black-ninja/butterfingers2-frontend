@@ -13,24 +13,34 @@ interface Props {
 }
 export default function Results(props: Props) {
   const { playersState, currentPlayer, opponentPlayer, onPlayAgain } = props;
+  console.log(playersState[currentPlayer]?.result);
+  let wpmYou;
+  let wpmOpponent;
+  try {
+    wpmYou =
+      playersState[currentPlayer]!.result!.timeline[
+        playersState[currentPlayer]!.result!.timeline.length - 1
+      ].wpm;
+  } catch (err) {
+    console.log(err);
+  }
+  try {
+    wpmOpponent =
+      playersState[opponentPlayer]!.result!.timeline[
+        playersState[opponentPlayer]!.result!.timeline.length - 1
+      ].wpm;
+  } catch (err) {
+    console.log(err);
+  }
 
-  const wpmYou =
-    playersState[currentPlayer]!.result?.timeline[
-      playersState[currentPlayer]!.result!.timeline!.length - 1
-    ].wpm;
-
-  const wpmOpponent =
-    playersState[opponentPlayer]!.result!.timeline[
-      playersState[opponentPlayer]!.result!.timeline.length - 1
-    ].wpm;
   const [showPlayerResult, setShowPlayerResult] = useState<
     'player1' | 'player2'
   >(currentPlayer);
 
   const winner =
-    wpmYou! > wpmOpponent
+    wpmYou! > wpmOpponent!
       ? currentPlayer
-      : wpmYou! < wpmOpponent
+      : wpmYou! < wpmOpponent!
         ? opponentPlayer
         : null;
 
@@ -41,22 +51,18 @@ export default function Results(props: Props) {
           winner === currentPlayer
             ? styles.winnerTextWon
             : winner === opponentPlayer
-              ? styles.winnerTextLose
+              ? styles.winnerTextLost
               : ''
         }`}
       >
-        {!winner
-          ? 'Tie!'
-          : winner === currentPlayer
-            ? 'YOU WON!!'
-            : 'You Lost :('}
+        {!winner ? 'Tie!' : winner === currentPlayer ? 'You Won!' : 'You Lost!'}
       </span>
-
-      <div className={styles.playerResultsButtonsWrapper}>
+      <div className={styles.playerResultButtonsWrapper}>
         <div className={styles.playerResultButtons}>
           <ButtonRounded
-            className={`${styles.playerResultButtonsBtn} ${styles.playerResultButtonsBtnFirst}
-          ${currentPlayer === showPlayerResult && styles.active}`}
+            className={`${styles.playerResultButtonsBtn} ${
+              styles.playerResultButtonsBtnFirst
+            } ${currentPlayer === showPlayerResult ? styles.active : ''}`}
             onClick={() => setShowPlayerResult(currentPlayer)}
           >
             {winner === currentPlayer && (
@@ -64,49 +70,53 @@ export default function Results(props: Props) {
             )}
             <span>You</span>
           </ButtonRounded>
-          {!playersState[opponentPlayer]}?.result ? (
-          <Tooltip
-            className={styles.playerResultButtonsBtnTooltip}
-            text={
-              <div>
-                <p>Opponent hasn't finished Test</p>
-                <p>(disconnected).</p>
-              </div>
-            }
-            showOnHover
-          >
+
+          {!playersState[opponentPlayer]?.result ? (
+            <Tooltip
+              className={styles.playerResultButtonsBtnTooltip}
+              text={
+                <div>
+                  <p>Opponent hasn't finished the test</p>
+                  <p>(disconnected).</p>
+                </div>
+              }
+              showOnHover
+            >
+              <ButtonRounded
+                className={`${styles.playerResultButtonsBtn} ${
+                  styles.playerResultButtonsBtnSecond
+                } ${opponentPlayer === showPlayerResult ? styles.active : ''}`}
+                onClick={() => setShowPlayerResult(opponentPlayer)}
+                disabled={playersState[opponentPlayer]?.disconnected}
+              >
+                {winner === opponentPlayer && (
+                  <IconTrophy className={styles.iconTrophy} />
+                )}
+                <span>Opponent</span>
+              </ButtonRounded>
+            </Tooltip>
+          ) : (
             <ButtonRounded
-              className={`${styles.playerResultButtonsBtn} ${styles.playerResultButtonsBtnSecond}
-            ${opponentPlayer === showPlayerResult && styles.active}`}
+              className={`${styles.playerResultButtonsBtn} ${
+                styles.playerResultButtonsBtnSecond
+              } ${opponentPlayer === showPlayerResult ? styles.active : ''}`}
               onClick={() => setShowPlayerResult(opponentPlayer)}
-              disabled={playersState[opponentPlayer]?.disconnected}
+              disabled={!playersState[opponentPlayer]?.result}
             >
               {winner === opponentPlayer && (
                 <IconTrophy className={styles.iconTrophy} />
               )}
               <span>Opponent</span>
             </ButtonRounded>
-          </Tooltip>
-          ):(
-          <ButtonRounded
-            className={`${styles.playerResultButtonsBtn} ${styles.playerResultButtonsBtnSecond} 
-            ${opponentPlayer === showPlayerResult && styles.active}`}
-            onClick={() => setShowPlayerResult(opponentPlayer)}
-            disabled={!playersState[opponentPlayer]?.result}
-          >
-            {winner === opponentPlayer && (
-              <IconTrophy className={styles.iconTrophy} />
-            )}
-            <span>Opponent</span>
-          </ButtonRounded>
-          )
+          )}
         </div>
       </div>
 
       {playersState[showPlayerResult]?.result && (
         <Result result={playersState[showPlayerResult]!.result!} />
       )}
-      <div className={styles.onPlayAgainWrapper}>
+
+      <div className={styles.playAgainWrapper}>
         <ButtonRounded
           variant="2"
           className={styles.playAgain}
@@ -119,13 +129,13 @@ export default function Results(props: Props) {
           <IconRefresh className={styles.playAgainIcon} />
           <span>Play Again</span>
         </ButtonRounded>
-        <span>
+        <span className={styles.playAgainText}>
           {playersState[opponentPlayer]?.disconnected
-            ? 'Opponent Disconnected'
+            ? 'Opponent disconnected!'
             : playersState[opponentPlayer]?.playAgain
-              ? 'Opponent Wants To Play Again'
+              ? 'Opponent wants to play again!'
               : playersState[currentPlayer]?.playAgain
-                ? 'Play Again Against Your opponent!'
+                ? 'Play again requested to your opponent!'
                 : ''}
         </span>
       </div>
