@@ -32,11 +32,11 @@ function OneVersusOne(props: Props) {
   const currentPlayerState = roomState?.players[currentPlayer];
   const opponentPlayerState = roomState?.players[opponentPlayer];
 
-  useEffect(() => {
-    return () => {
-      socket.emit('leave-room');
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     socket.emit('leave-room');
+  //   };
+  // }, []);
 
   useEffect(() => {
     socket.on('room-state', (argRoomState: OneVersusOneStateType) => {

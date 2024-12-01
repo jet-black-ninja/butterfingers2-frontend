@@ -22,7 +22,7 @@ function LoadingError({ status }: Props) {
               <Tooltip
                 text={
                   <div className={styles.apiTooltipText}>
-                    <span>quotable API</span>
+                    <span>QuotSlate API</span>
                     <IconRedirect className={styles.apiTooltipTextIcon} />
                   </div>
                 }
@@ -32,7 +32,7 @@ function LoadingError({ status }: Props) {
                 <a
                   rel="noreferrer"
                   target="_blank"
-                  href="https://github.com/lukePeavey/quotable"
+                  href="https://github.com/musheer360/QuoteSlate"
                   className={styles.apiLink}
                 >
                   Third-party API

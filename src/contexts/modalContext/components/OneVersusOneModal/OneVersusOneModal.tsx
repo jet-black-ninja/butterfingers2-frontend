@@ -19,6 +19,8 @@ function OneVersusOneModal(props: Props) {
     '1v1-quote-length',
     'medium'
   );
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   useEffect(() => {
     socket.on('connect', () => {
       setIsSocketConnected(true);
@@ -31,21 +33,22 @@ function OneVersusOneModal(props: Props) {
       socket.off('disconnect');
     };
   }, []);
-  const onCreateRoom = () => 
-  { 
+  const onCreateRoom = () => {
     console.log('here');
     socket.emit('create-room', quoteLength);
   };
   const onJoinRoom = () => {
     if (inputCode.length !== 6) return;
-    setCodeLoading(false);
+    setCodeLoading(true);
     socket.emit('join-room', inputCode);
   };
   useEffect(() => {
-    socket.on('join-room-error', () => {
+    socket.on('join-room-error', (errorMessage: string) => {
       setCodeLoading(false);
       setCodeError(true);
+      setErrorMessage(errorMessage); // Add this line
     });
+
     return () => {
       socket.off('join-room-error');
     };
@@ -128,7 +131,7 @@ function OneVersusOneModal(props: Props) {
               Join
             </ButtonRounded>
             {codeError && (
-              <span className={styles.errorMessage}>Invalid Room Code</span>
+              <span className={styles.errorMessage}>{errorMessage}</span>
             )}
           </form>
         </div>

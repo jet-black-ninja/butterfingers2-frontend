@@ -31,7 +31,7 @@
 - Custom made smooth typing input that displays errors as you type.
 - Different typing modes, such as 'time', 'words', 'quote'.
 - Multiplayer 1v1 mode to play against your friends.
-- Fetches Random quotes using 'quotable' API.
+- Fetches Random quotes using 'QuoteSlate' API.
 - Results after typing is done, including WPM, Accuracy, Errors, Interactive Dashboard.
 - User can customize the app to their liking.
 - Various app color themes.
