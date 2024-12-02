@@ -14,8 +14,8 @@ interface Props {
 export default function Results(props: Props) {
   const { playersState, currentPlayer, opponentPlayer, onPlayAgain } = props;
   console.log(playersState[currentPlayer]?.result);
-  let wpmYou;
-  let wpmOpponent;
+  let wpmYou = 0;
+  let wpmOpponent = 0;
   try {
     wpmYou =
       playersState[currentPlayer]!.result!.timeline[
